@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://db:3306/relay?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+relay:
+  jwt:
+    secret: ${JWT_SECRET}
+  auth:
+    frontend-url: ${FRONTEND_URL}
+    refresh-cookie-secure: true
+  cors:
+    allowed-origins: ${FRONTEND_URL}
+  storage:
+    endpoint: ${MINIO_ENDPOINT}
+    access-key: ${MINIO_ACCESS_KEY}
+    secret-key: ${MINIO_SECRET_KEY}
+    bucket: relay-files
+    region: us-east-1
+
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+
+logging:
+  pattern:
+    console: '{"timestamp":"%d{yyyy-MM-dd''T''HH:mm:ss.SSSZ}","level":"%p","thread":"%t","logger":"%logger{36}","message":"%replace(%m){"","\""}","trace":"%X{traceId:-}","span":"%X{spanId:-}","request_id":"%X{requestId:-}","user_id":"%X{userId:-}"}%n'
+  level:
+    root: INFO
+    com.relay: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: relay-api
+    export:
+      prometheus:
+        enabled: true
+  server:
+    port: 8081

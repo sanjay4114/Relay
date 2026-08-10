@@ -1,0 +1,73 @@
+# Optional production / staging stack — not required for local development.
+# Run from repository root:  docker compose -f docker/docker-compose.yml up --build -d
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: relay-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-relay_root}
+      MYSQL_DATABASE: relay
+      MYSQL_USER: ${MYSQL_USER:-relay}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-relay}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "relay", "-p${MYSQL_PASSWORD:-relay}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: relay-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-relay_minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-relay_minio_secret}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: relay-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: relay-api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/relay?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-relay}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-relay}
+      RELAY_JWT_SECRET: ${RELAY_JWT_SECRET:-change-me-in-production-use-at-least-256-bits}
+      RELAY_CORS_ORIGINS: ${RELAY_CORS_ORIGINS:-http://localhost:5173}
+      RELAY_AUTH_FRONTEND_URL: ${RELAY_AUTH_FRONTEND_URL:-http://localhost:5173}
+      RELAY_STORAGE_ENDPOINT: http://minio:9000
+      RELAY_STORAGE_ACCESS_KEY: ${MINIO_ROOT_USER:-relay_minio}
+      RELAY_STORAGE_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-relay_minio_secret}
+      SPRING_MAIL_HOST: mailpit
+      SPRING_MAIL_PORT: 1025
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:
+  minio_data:

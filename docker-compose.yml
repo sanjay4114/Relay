@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: relay-mysql
+    environment:
+      MYSQL_DATABASE: relay
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-sanjay@1083}
+    ports:
+      - "3306:3306"
+    volumes:
+      - relay-mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    container_name: relay-minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-relay_minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-relay_minio_secret}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - relay-minio-data:/data
+    command: server /data --console-address ":9001"
+
+volumes:
+  relay-mysql-data:
+  relay-minio-data:

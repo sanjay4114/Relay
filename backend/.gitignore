@@ -1,0 +1,17 @@
+# Compiled output
+target/
+bin/
+
+# Eclipse / STS
+.classpath
+.project
+.settings/
+.factorypath
+.springBeans
+
+# IntelliJ (optional)
+.idea/
+*.iml
+
+# Logs
+*.log

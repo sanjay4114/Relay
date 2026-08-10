@@ -1,0 +1,41 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Eclipse / STS
+.classpath
+.project
+.settings/
+.factorypath
+.springBeans
+bin/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java / Maven
+backend/**/target/
+backend/**/*.jar
+backend/**/*.war
+*.class
+*.log
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+
+# Env
+.env
+.env.local
+
+# Keep tracked env templates
+!**/.env.example
+
+# Docker volumes
+data/
