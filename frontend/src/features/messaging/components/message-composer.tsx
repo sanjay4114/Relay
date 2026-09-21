@@ -1,7 +1,7 @@
-import { useState, useRef, KeyboardEvent } from 'react'
+import { useState, useRef, type KeyboardEvent } from 'react'
 import { SendHorizonal, Paperclip, X, FileIcon, Loader2 } from 'lucide-react'
 import { Button } from '@/shared/ui/button'
-import { fileApi, FileAttachment } from '../api/file-api'
+import { fileApi, type FileAttachment } from '../api/file-api'
 import { toast } from 'sonner'
 
 interface MessageComposerProps {

@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
-import { messageApi, Message } from '../api/message-api'
+import { messageApi, type Message } from '../api/message-api'
 import { useEffect, useCallback } from 'react'
 import { useChannelSubscription } from './use-channel-subscription'
 import { wsService } from '@/shared/lib/websocket'

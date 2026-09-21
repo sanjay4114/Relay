@@ -30,7 +30,9 @@ public class PresenceService {
         sessions.add(sessionId);
 
         if (wasOffline) {
-            broadcastPresence(userPublicId, "ONLINE", null);
+            Instant now = Instant.now();
+            updateLastSeen(userPublicId, now);
+            broadcastPresence(userPublicId, "ONLINE", now);
         }
     }
 

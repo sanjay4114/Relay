@@ -10,7 +10,7 @@ import { Input } from '@/shared/ui/input'
 import { getApiErrorMessage } from '@/shared/api/client'
 
 const forgotPasswordSchema = z.object({
-  email: z.email('Enter a valid email'),
+  email: z.string().email('Enter a valid email'),
 })
 
 type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TaskDto } from '../api/task-api';
+import type { TaskDto } from '../api/task-api';
 import { TaskCard } from './TaskCard';
 
 interface TaskColumnProps {

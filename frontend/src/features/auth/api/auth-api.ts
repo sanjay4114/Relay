@@ -24,9 +24,22 @@ export interface ResetPasswordPayload {
   newPassword: string
 }
 
+import { useWorkspaceStore } from '@/features/workspaces/store/workspace-store'
+
 function persistAuth(data: AuthResponse) {
   setAccessToken(data.accessToken)
   setStoredWorkspace(data.workspace)
+  if (data.workspace) {
+    useWorkspaceStore.getState().setActiveWorkspace({
+      publicId: data.workspace.publicId,
+      name: data.workspace.name,
+      slug: data.workspace.slug,
+      description: data.workspace.description,
+      role: 'OWNER',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    })
+  }
 }
 
 export async function register(payload: RegisterPayload): Promise<AuthResponse> {
@@ -48,7 +61,11 @@ export async function refreshAccessToken(): Promise<string> {
 }
 
 export async function logout(): Promise<void> {
-  await apiClient.post('/auth/logout')
+  try {
+    await apiClient.post('/auth/logout')
+  } finally {
+    useWorkspaceStore.getState().clearActiveWorkspace()
+  }
 }
 
 export async function forgotPassword(email: string): Promise<string> {

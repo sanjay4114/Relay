@@ -74,7 +74,7 @@ Configure API URLs in `frontend/.env`:
 
 ```
 VITE_API_BASE_URL=http://localhost:8080/api/v1
-VITE_WS_URL=http://localhost:8080/ws
+VITE_WS_URL=http://localhost:8080/api/ws
 ```
 
 ## Development workflow

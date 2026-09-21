@@ -21,7 +21,7 @@ export const GlobalSearchDialog = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   
-  const currentWorkspace = useWorkspaceStore((s) => s.currentWorkspace);
+  const activeWorkspace = useWorkspaceStore((s) => s.activeWorkspace);
 
   // Debounce query
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -30,7 +30,7 @@ export const GlobalSearchDialog = () => {
     return () => clearTimeout(t);
   }, [query]);
 
-  const { data, isLoading } = useGlobalSearch(debouncedQuery, currentWorkspace?.id, type);
+  const { data, isLoading } = useGlobalSearch(debouncedQuery, activeWorkspace?.publicId, type);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -65,7 +65,7 @@ export const GlobalSearchDialog = () => {
         className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors border border-transparent dark:border-gray-700 w-64"
       >
         <Search className="w-4 h-4" />
-        <span className="flex-1 text-left">Search {currentWorkspace?.name || 'Relay'}...</span>
+        <span className="flex-1 text-left">Search {activeWorkspace?.name || 'Relay'}...</span>
         <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 font-mono text-[10px] font-medium text-gray-500 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded opacity-100">
           <span className="text-xs">⌘</span>K
         </kbd>

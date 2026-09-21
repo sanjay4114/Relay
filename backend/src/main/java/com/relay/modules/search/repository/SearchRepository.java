@@ -1,11 +1,12 @@
 package com.relay.modules.search.repository;
 
-import com.relay.modules.search.api.dto.SearchResultDto;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
+import com.relay.modules.search.api.dto.SearchResultDto;
 
 @Repository
 public class SearchRepository {
@@ -145,7 +146,7 @@ public class SearchRepository {
                    f.original_name as title,
                    f.mime_type as subtitle,
                    f.thumbnail_path as imageUrl,
-                   f.created_at as createdAt,
+                   f.uploaded_at as createdAt,
                    m.public_id as messagePublicId,
                    c.public_id as channelPublicId,
                    w.public_id as workspacePublicId
@@ -158,7 +159,7 @@ public class SearchRepository {
               AND cm.user_id = :userId
               AND m.deleted_at IS NULL
               AND (:workspaceId IS NULL OR w.public_id = :workspaceId)
-            ORDER BY f.created_at DESC
+            ORDER BY f.uploaded_at DESC
             LIMIT :limit OFFSET :offset
         """;
 

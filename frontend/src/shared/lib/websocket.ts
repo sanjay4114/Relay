@@ -1,6 +1,18 @@
-import { Client, IMessage, StompSubscription } from '@stomp/stompjs'
+import { Client, type IMessage, type StompSubscription } from '@stomp/stompjs'
 import SockJS from 'sockjs-client'
-import { getAuthToken } from './auth-storage'
+import { getAccessToken } from './auth-storage'
+
+/** STOMP/SockJS endpoint (Spring registers `/api/ws`). */
+export function resolveWebSocketUrl(): string {
+  const configured = import.meta.env.VITE_WS_URL
+  if (typeof configured === 'string' && configured.trim() !== '') {
+    return configured.trim()
+  }
+  if (import.meta.env.PROD) {
+    return '/api/ws'
+  }
+  return 'http://localhost:8080/api/ws'
+}
 
 export class WebSocketService {
   private static instance: WebSocketService
@@ -22,7 +34,7 @@ export class WebSocketService {
     }
 
     this.connectionPromise = new Promise((resolve, reject) => {
-      const token = getAuthToken()
+      const token = getAccessToken()
       if (!token) {
         reject(new Error('No auth token available'))
         this.connectionPromise = null
@@ -30,7 +42,7 @@ export class WebSocketService {
       }
 
       this.client = new Client({
-        webSocketFactory: () => new SockJS('http://localhost:8080/api/ws'),
+        webSocketFactory: () => new SockJS(resolveWebSocketUrl()),
         connectHeaders: {
           Authorization: `Bearer ${token}`,
         },

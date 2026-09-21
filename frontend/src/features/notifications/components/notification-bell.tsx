@@ -2,7 +2,7 @@ import { Bell, Check, Trash2, MessageSquare, AtSign, UserPlus, Hash, Paperclip, 
 import { Button } from '@/shared/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover'
 import { useNotifications } from '../hooks/use-notifications'
-import { Notification } from '../api/notification-api'
+import type { Notification } from '../api/notification-api'
 import { formatDistanceToNow } from 'date-fns'
 import { ScrollArea } from '@/shared/ui/scroll-area'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar'

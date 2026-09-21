@@ -1,3 +1,5 @@
+import { memo, useState, useRef, type KeyboardEvent } from 'react'
+import { motion } from 'framer-motion'
 import { format } from 'date-fns'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar'
 import { Pencil, Trash2, Undo2, MoreHorizontal, MessageSquare, Pin, Bookmark, SmilePlus, Paperclip, FileText, Download, CheckSquare } from 'lucide-react'
@@ -9,6 +11,7 @@ import { useWorkspaceStore } from '@/features/workspaces/store/workspace-store'
 import { toast } from 'sonner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { CreateTaskModal } from '@/features/tasks/components/CreateTaskModal'
+import { messageApi, type Message } from '../api/message-api'
 
 interface MessageBubbleProps {
   message: Message
@@ -357,7 +360,7 @@ export const MessageBubble = memo(function MessageBubble({ message, isConsecutiv
         <CreateTaskModal 
           open={isTaskModalOpen} 
           onOpenChange={setIsTaskModalOpen}
-          workspaceId={activeWorkspace.id}
+          workspaceId={activeWorkspace.publicId}
           initialData={{
             title: `Task from message by ${message.sender.displayName}`,
             description: message.content,

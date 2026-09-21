@@ -3,7 +3,7 @@ import { formatDistanceToNow, isToday, isYesterday } from 'date-fns'
 import { Bell, Check, Trash2, MessageSquare, AtSign, UserPlus, Hash, Paperclip, CheckSquare } from 'lucide-react'
 import { Button } from '@/shared/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar'
-import { Notification } from '../api/notification-api'
+import type { Notification } from '../api/notification-api'
 import { Loader2 } from 'lucide-react'
 
 export function NotificationsPage() {

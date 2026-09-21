@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { taskApi, CreateTaskRequest, UpdateTaskRequest } from '../api/task-api';
+import { taskApi, type CreateTaskRequest, type UpdateTaskRequest } from '../api/task-api';
 
 export const useWorkspaceTasks = (workspaceId: string) => {
   return useQuery({

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Message } from '../api/message-api'
+import type { Message } from '../api/message-api'
 import { MessageBubble } from './message-bubble'
 import { Hash } from 'lucide-react'
 

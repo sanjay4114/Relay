@@ -14,9 +14,12 @@ export function clearAccessToken(): void {
   localStorage.removeItem(ACCESS_TOKEN_KEY)
 }
 
+import { useWorkspaceStore } from '@/features/workspaces/store/workspace-store'
+
 export function clearAuth(): void {
   clearAccessToken()
   clearStoredWorkspace()
+  useWorkspaceStore.getState().clearActiveWorkspace()
 }
 
 export function isAuthenticated(): boolean {

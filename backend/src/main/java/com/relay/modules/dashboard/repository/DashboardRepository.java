@@ -62,7 +62,7 @@ public class DashboardRepository {
                        f.original_name as description,
                        u.display_name as actorName,
                        u.avatar_url as actorAvatar,
-                       f.created_at as timestamp,
+                       f.uploaded_at as timestamp,
                        f.public_id as meta1,
                        m.public_id as meta2
                 FROM file_attachments f
@@ -72,7 +72,7 @@ public class DashboardRepository {
                 JOIN channel_members cm ON c.id = cm.channel_id
                 JOIN workspaces w ON c.workspace_id = w.id
                 WHERE cm.user_id = :userId AND w.public_id = :workspaceId
-                ORDER BY f.created_at DESC LIMIT :limit
+                ORDER BY f.uploaded_at DESC LIMIT :limit
             )
             ORDER BY timestamp DESC
             LIMIT :limit
@@ -117,17 +117,17 @@ public class DashboardRepository {
                  JOIN channels c ON m.channel_id = c.id
                  JOIN channel_members cm ON c.id = cm.channel_id
                  JOIN workspaces w ON c.workspace_id = w.id
-                 WHERE w.public_id = :workspaceId AND cm.user_id = :userId AND m.created_at > cm.last_read_at AND m.deleted_at IS NULL) as unreadMessages,
+                 WHERE w.public_id = :workspaceId AND cm.user_id = :userId AND (cm.last_read_at IS NULL OR m.created_at > cm.last_read_at) AND m.deleted_at IS NULL) as unreadMessages,
                  
                 (SELECT COUNT(*) FROM channels c 
                  JOIN workspaces w ON c.workspace_id = w.id 
                  JOIN channel_members cm ON c.id = cm.channel_id 
                  WHERE w.public_id = :workspaceId AND cm.user_id = :userId AND c.deleted_at IS NULL) as activeChannels,
                  
-                (SELECT COUNT(DISTINCT up.user_id) FROM user_presence up
-                 JOIN workspace_members wm ON up.user_id = wm.user_id
+                (SELECT COUNT(DISTINCT u.id) FROM users u
+                 JOIN workspace_members wm ON u.id = wm.user_id
                  JOIN workspaces w ON wm.workspace_id = w.id
-                 WHERE w.public_id = :workspaceId AND up.status = 'ONLINE') as onlineMembers
+                 WHERE w.public_id = :workspaceId AND u.deleted_at IS NULL AND u.last_seen_at >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)) as onlineMembers
         """;
 
         return jdbcClient.sql(sql)

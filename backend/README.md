@@ -1,6 +1,6 @@
 # Relay API (Backend)
 
-Standalone Maven Spring Boot project. Runs independently of the frontend — the web app communicates via REST (`/api/v1`) and WebSocket (`/ws`).
+Standalone Maven Spring Boot project. Runs independently of the frontend — the web app communicates via REST (`/api/v1`) and STOMP/SockJS WebSocket (`/api/ws`).
 
 ## Prerequisites
 

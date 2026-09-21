@@ -1,6 +1,6 @@
 import { X } from 'lucide-react'
 import { Button } from '@/shared/ui/button'
-import { Message } from '../api/message-api'
+import type { Message } from '../api/message-api'
 import { useThreadMessages } from '../hooks/use-thread-messages'
 import { MessageList } from './message-list'
 import { MessageComposer } from './message-composer'

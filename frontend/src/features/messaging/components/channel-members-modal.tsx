@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { channelApi, Channel } from '../api/channel-api'
+import { channelApi, type Channel } from '../api/channel-api'
 import { useWorkspaceStore } from '@/features/workspaces/store/workspace-store'
 import { DialogHeader, DialogTitle, DialogDescription } from '@/shared/ui/dialog'
 import { Button } from '@/shared/ui/button'

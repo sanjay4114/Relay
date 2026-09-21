@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/shared/ui/alert-dialog'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { buttonVariants } from '@/shared/ui/button'
 
 interface ConfirmationDialogProps {

@@ -4,7 +4,7 @@ import { useWorkspaceTasks, useUpdateTask } from '../hooks/use-tasks';
 import { TaskColumn } from './TaskColumn';
 import { Loader2, Plus } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
-import { TaskDto } from '../api/task-api';
+import type { TaskDto } from '../api/task-api';
 import { CreateTaskModal } from './CreateTaskModal';
 
 const COLUMNS = [
@@ -15,9 +15,9 @@ const COLUMNS = [
 ] as const;
 
 export function TaskBoard() {
-  const currentWorkspace = useWorkspaceStore((s) => s.currentWorkspace);
-  const { data: tasks, isLoading } = useWorkspaceTasks(currentWorkspace?.id || '');
-  const { mutate: updateTask } = useUpdateTask(currentWorkspace?.id || '');
+  const activeWorkspace = useWorkspaceStore((s) => s.activeWorkspace);
+  const { data: tasks, isLoading } = useWorkspaceTasks(activeWorkspace?.publicId || '');
+  const { mutate: updateTask } = useUpdateTask(activeWorkspace?.publicId || '');
   
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [optimisticTasks, setOptimisticTasks] = useState<TaskDto[] | null>(null);
@@ -33,7 +33,7 @@ export function TaskBoard() {
   const handleDrop = (e: React.DragEvent, status: string) => {
     e.preventDefault();
     const taskId = e.dataTransfer.getData('text/plain');
-    if (!taskId || !currentWorkspace) return;
+    if (!taskId || !activeWorkspace) return;
 
     const task = displayTasks.find(t => t.publicId === taskId);
     if (!task || task.status === status) return;
@@ -57,7 +57,7 @@ export function TaskBoard() {
     e.dataTransfer.dropEffect = 'move';
   };
 
-  if (!currentWorkspace) return null;
+  if (!activeWorkspace) return null;
   
   if (isLoading && !tasks) {
     return <div className="flex h-full items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-teal-500" /></div>;
@@ -89,7 +89,7 @@ export function TaskBoard() {
         ))}
       </div>
 
-      <CreateTaskModal open={createModalOpen} onOpenChange={setCreateModalOpen} workspaceId={currentWorkspace.id} />
+      <CreateTaskModal open={createModalOpen} onOpenChange={setCreateModalOpen} workspaceId={activeWorkspace.publicId} />
     </div>
   );
 }

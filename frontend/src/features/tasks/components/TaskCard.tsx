@@ -1,5 +1,5 @@
 import React from 'react';
-import { TaskDto } from '../api/task-api';
+import type { TaskDto } from '../api/task-api';
 import { AlertCircle, ArrowUp, ArrowDown, ArrowRight, Link as LinkIcon, MoreHorizontal } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/shared/ui/avatar';
 

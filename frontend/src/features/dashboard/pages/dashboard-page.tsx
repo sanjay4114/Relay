@@ -12,17 +12,19 @@ import { useState } from 'react'
 import { CreateTaskModal } from '@/features/tasks/components/CreateTaskModal'
 import { CreateChannelModal } from '@/features/messaging/components/create-channel-modal'
 
+import { Dialog, DialogContent } from '@/shared/ui/dialog'
+
 export function DashboardPage() {
-  const currentWorkspace = useWorkspaceStore(s => s.currentWorkspace)
+  const activeWorkspace = useWorkspaceStore(s => s.activeWorkspace)
   const { data: user } = useCurrentUser()
-  const { data: stats, isLoading: statsLoading } = useDashboardStats(currentWorkspace?.id)
-  const { data: timeline, isLoading: timelineLoading } = useDashboardTimeline(currentWorkspace?.id)
+  const { data: stats, isLoading: statsLoading } = useDashboardStats(activeWorkspace?.publicId)
+  const { data: timeline, isLoading: timelineLoading } = useDashboardTimeline(activeWorkspace?.publicId)
   const navigate = useNavigate()
 
   const [createTaskOpen, setCreateTaskOpen] = useState(false)
   const [createChannelOpen, setCreateChannelOpen] = useState(false)
 
-  if (!currentWorkspace || !user) return null
+  if (!activeWorkspace || !user) return null
 
   const renderIcon = (type: string) => {
     switch (type) {
@@ -42,7 +44,7 @@ export function DashboardPage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 bg-gradient-to-r from-teal-900/20 to-transparent p-6 rounded-xl border border-teal-500/10">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Welcome back, {user.displayName}</h2>
-          <p className="text-muted-foreground mt-1">Here's what's happening in <span className="font-semibold text-foreground">{currentWorkspace.name}</span></p>
+          <p className="text-muted-foreground mt-1">Here's what's happening in <span className="font-semibold text-foreground">{activeWorkspace.name}</span></p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => setCreateTaskOpen(true)} className="bg-teal-600 hover:bg-teal-700 text-white shadow-md">
@@ -200,8 +202,12 @@ export function DashboardPage() {
         </div>
       </div>
       
-      {createTaskOpen && <CreateTaskModal open={createTaskOpen} onOpenChange={setCreateTaskOpen} workspaceId={currentWorkspace.id} />}
-      {createChannelOpen && <CreateChannelModal open={createChannelOpen} onOpenChange={setCreateChannelOpen} workspaceId={currentWorkspace.id} />}
+      {createTaskOpen && <CreateTaskModal open={createTaskOpen} onOpenChange={setCreateTaskOpen} workspaceId={activeWorkspace.publicId} />}
+      <Dialog open={createChannelOpen} onOpenChange={setCreateChannelOpen}>
+        <DialogContent>
+          <CreateChannelModal onSuccess={() => setCreateChannelOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </motion.div>
   )
 }

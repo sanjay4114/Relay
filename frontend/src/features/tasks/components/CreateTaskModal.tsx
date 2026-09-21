@@ -6,7 +6,7 @@ import * as z from 'zod';
 import { Button } from '@/shared/ui/button';
 import { X, Loader2 } from 'lucide-react';
 import { useCreateTask } from '../hooks/use-tasks';
-import { CreateTaskRequest } from '../api/task-api';
+import type { CreateTaskRequest } from '../api/task-api';
 
 const taskSchema = z.object({
   title: z.string().min(2, 'Title must be at least 2 characters'),

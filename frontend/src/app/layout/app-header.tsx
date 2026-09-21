@@ -1,6 +1,6 @@
 import { Moon, Sun, LogOut, Search, User as UserIcon, Settings } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { Button } from '@/shared/ui/button'
 import { Avatar, AvatarFallback } from '@/shared/ui/avatar'
 import { 

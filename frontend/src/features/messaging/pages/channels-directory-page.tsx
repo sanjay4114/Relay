@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Hash, Lock, Users, Search as SearchIcon } from 'lucide-react'
-import { channelApi, Channel } from '../api/channel-api'
+import { channelApi, type Channel } from '../api/channel-api'
 import { useWorkspaceStore } from '@/features/workspaces/store/workspace-store'
 import { PageHeader } from '@/shared/components/page-header'
 import { EmptyState } from '@/shared/components/empty-state'

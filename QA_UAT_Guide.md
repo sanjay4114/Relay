@@ -96,7 +96,7 @@ Open Chrome/Edge Developer Tools (F12) > **Console**.
 ### 6. Check Network
 Go to the **Network** tab in Developer Tools.
 - Verify that API requests (e.g., fetching the current user) are successfully reaching `http://localhost:8080`.
-- Verify the WebSocket/STOMP connection (`ws://localhost:8080/ws`) upgrades to `101 Switching Protocols` successfully.
+- Verify the WebSocket/STOMP connection to SockJS (`http://localhost:8080/api/ws`, or the value of `VITE_WS_URL` in `frontend/.env`) completes successfully (Network tab: SockJS transport requests to `/api/ws/**`, STOMP `CONNECTED` in console if debug enabled).
 
 ---
 

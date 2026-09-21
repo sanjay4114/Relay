@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { notificationApi, Notification } from '../api/notification-api'
+import { notificationApi, type Notification } from '../api/notification-api'
 import { useEffect } from 'react'
 import { wsService } from '@/shared/lib/websocket'
 

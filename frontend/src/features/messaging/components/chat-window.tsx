@@ -1,11 +1,11 @@
-import { Channel } from '../api/channel-api'
+import type { Channel } from '../api/channel-api'
 import { useMessages } from '../hooks/use-messages'
 import { useChannelSubscription } from '../hooks/use-channel-subscription'
 import { MessageList } from './message-list'
 import { MessageComposer } from './message-composer'
 import { ThreadPanel } from './thread-panel'
 import { useState, useCallback } from 'react'
-import { Message } from '../api/message-api'
+import type { Message } from '../api/message-api'
 
 interface ChatWindowProps {
   channel: Channel
